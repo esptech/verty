@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bindings xmlns="http://java.sun.com/xml/ns/jaxb"
+          xmlns:xsi="http://www.w3.org/2000/10/XMLSchema-instance"
+          xmlns:xs="http://www.w3.org/2001/XMLSchema"
+          xsi:schemaLocation="http://java.sun.com/xml/ns/jaxb http://java.sun.com/xml/ns/jaxb/bindingschema_2_0.xsd"
+          version="2.1">
+    <globalBindings>
+        <serializable uid="1"/>
+    </globalBindings>
+    <bindings schemaLocation="wsdl/TWINT-AcquirerTransactionInterface_v2.0_types.xsd">
+        <bindings node=".//xs:simpleType[@name='OperationResultType']">
+            <typesafeEnumClass name="AcquirerOperationResultType" />
+        </bindings>
+    </bindings>
+    <bindings schemaLocation="wsdl/TWINT-AcquirerTransactionInterface_v2.0_types.xsd">
+        <bindings node=".//xs:complexType[@name='CheckSystemStatusRequestType']">
+            <class name="AcquirerCheckSystemStatusRequestType" />
+        </bindings>
+    </bindings>
+    <bindings schemaLocation="wsdl/TWINT-AcquirerTransactionInterface_v2.0_types.xsd">
+        <bindings node=".//xs:complexType[@name='CheckSystemStatusResponseType']">
+            <class name="AcquirerCheckSystemStatusResponseType" />
+        </bindings>
+    </bindings>
+</bindings>

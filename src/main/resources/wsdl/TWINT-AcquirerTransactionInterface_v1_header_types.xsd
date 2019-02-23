@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns:tns="http://twint.ch/services/header/types/v1"
+        xmlns:base="http://twint.ch/services/base/types/v1"
+        targetNamespace="http://twint.ch/services/header/types/v1"
+        elementFormDefault="qualified"
+        version="1.0">
+
+    <xs:import schemaLocation="TWINT-Basetypes_v1.xsd" namespace="http://twint.ch/services/base/types/v1"/>
+
+    <xs:element name="RequestHeaderElement" type="tns:RequestHeaderType"/>
+    <xs:element name="ResponseHeaderElement" type="tns:ResponseHeaderType"/>
+
+    <xs:complexType name="RequestHeaderType">
+        <xs:sequence>
+            <xs:element name="MessageId" type="base:UuidType"/>
+            <xs:element name="ClientSoftwareName" type="base:Token50Type"/>
+            <xs:element name="ClientSoftwareVersion" type="base:Token50Type"/>
+        </xs:sequence>
+        <xs:anyAttribute namespace="http://schemas.xmlsoap.org/soap/envelope/ http://www.w3.org/2003/05/soap-envelope" processContents="lax"/>
+    </xs:complexType>
+
+    <xs:complexType name="ResponseHeaderType">
+        <xs:sequence>
+            <xs:element name="MessageId" type="base:UuidType"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

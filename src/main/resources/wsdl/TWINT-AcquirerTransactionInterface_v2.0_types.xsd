@@ -1,0 +1,622 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:base="http://twint.ch/services/base/types/v1"
+	xmlns:tns="http://twint.ch/services/acquirer/transaction/types/v2"
+	targetNamespace="http://twint.ch/services/acquirer/transaction/types/v2"
+	elementFormDefault="qualified"
+	version="2.0">
+
+	<xs:import schemaLocation="TWINT-Basetypes_v1.xsd" namespace="http://twint.ch/services/base/types/v1" />
+
+	<xs:element name="RequestCheckInRequestElement" type="tns:RequestCheckInRequestType" />
+	<xs:element name="RequestCheckInResponseElement" type="tns:RequestCheckInResponseType" />
+	<xs:element name="MonitorCheckInRequestElement" type="tns:MonitorCheckInRequestType" />
+	<xs:element name="MonitorCheckInResponseElement" type="tns:MonitorCheckInResponseType" />
+	<xs:element name="CancelCheckInRequestElement" type="tns:CancelCheckInRequestType" />
+	<xs:element name="CancelCheckInResponseElement" type="tns:CancelCheckInResponseType" />
+	<xs:element name="StartOrderRequestElement" type="tns:StartOrderRequestType" />
+	<xs:element name="StartOrderResponseElement" type="tns:StartOrderResponseType" />
+	<xs:element name="MonitorOrderRequestElement" type="tns:MonitorOrderRequestType" />
+	<xs:element name="MonitorOrderResponseElement" type="tns:MonitorOrderResponseType" />
+	<xs:element name="ConfirmOrderRequestElement" type="tns:ConfirmOrderRequestType" />
+	<xs:element name="ConfirmOrderResponseElement" type="tns:ConfirmOrderResponseType" />
+	<xs:element name="CancelOrderRequestElement" type="tns:CancelOrderRequestType" />
+	<xs:element name="CancelOrderResponseElement" type="tns:CancelOrderResponseType" />
+	<xs:element name="FindOrderRequestElement" type="tns:FindOrderRequestType" />
+	<xs:element name="FindOrderResponseElement" type="tns:FindOrderResponseType" />
+	<xs:element name="EnrollCashRegisterRequestElement" type="tns:EnrollCashRegisterRequestType" />
+	<xs:element name="EnrollCashRegisterResponseElement" type="tns:EnrollCashRegisterResponseType" />
+	<xs:element name="CheckSystemStatusRequestElement" type="tns:CheckSystemStatusRequestType" />
+	<xs:element name="CheckSystemStatusResponseElement" type="tns:CheckSystemStatusResponseType" />
+	<xs:element name="GetCertificateValidityRequestElement" type="tns:GetCertificateValidityRequestType" />
+	<xs:element name="GetCertificateValidityResponseElement" type="tns:GetCertificateValidityResponseType" />
+	<xs:element name="RenewCertificateRequestElement" type="tns:RenewCertificateRequestType" />
+	<xs:element name="RenewCertificateResponseElement" type="tns:RenewCertificateResponseType" />
+	<xs:element name="StartUofRegistrationRequestElement" type="tns:StartUofRegistrationRequestType" />
+	<xs:element name="StartUofRegistrationResponseElement" type="tns:StartUofRegistrationResponseType" />
+	<xs:element name="MonitorUofRegistrationRequestElement" type="tns:MonitorUofRegistrationRequestType" />
+	<xs:element name="MonitorUofRegistrationResponseElement" type="tns:MonitorUofRegistrationResponseType" />
+	<xs:element name="ConfirmUofRegistrationRequestElement" type="tns:ConfirmUofRegistrationRequestType" />
+	<xs:element name="ConfirmUofRegistrationResponseElement" type="tns:ConfirmUofRegistrationResponseType" />
+	<xs:element name="CancelUofRegistrationRequestElement" type="tns:CancelUofRegistrationRequestType" />
+	<xs:element name="CancelUofRegistrationResponseElement" type="tns:CancelUofRegistrationResponseType" />
+	<xs:element name="DeregisterUofConnectionRequestElement" type="tns:DeregisterUofConnectionRequestType" />
+	<xs:element name="DeregisterUofConnectionResponseElement" type="tns:DeregisterUofConnectionResponseType" />
+
+
+	<!-- Interface Types -->
+	<xs:complexType name="RequestCheckInRequestType">
+		<xs:sequence>
+			<xs:element name="MerchantInformation" type="base:MerchantInformationType" />
+			<xs:choice>
+				<xs:element name="OfflineAuthorization" type="base:Token3000Type" />
+				<xs:element name="CouponCode" type="base:Token50Type" />
+				<xs:element name="CustomerRelationUuid" type="base:UuidType" />
+				<xs:element name="UnidentifiedCustomer" type="xs:boolean" />
+			</xs:choice>
+			<xs:element name="LoyaltyInformation" type="tns:LoyaltyType" minOccurs="0" />
+			<xs:element name="RequestCustomerRelationAlias" type="tns:RequestCustomerAliasType" minOccurs="0" />
+			<xs:element name="QRCodeRendering" type="xs:boolean" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="RequestCheckInResponseType">
+		<xs:sequence>
+			<xs:element name="CheckInNotification" type="tns:CheckInNotificationType" />
+			<xs:element name="Token" type="base:NumericTokenType" minOccurs="0" />
+			<xs:element name="QRCode" type="base:DataUriScheme" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="MonitorCheckInRequestType">
+		<xs:sequence>
+			<xs:element name="MerchantInformation" type="base:MerchantInformationType" ></xs:element>
+			<xs:choice minOccurs="0">
+				<xs:element name="CustomerRelationUuid" type="base:UuidType" />
+				<xs:element name="PairingUuid" type="base:UuidType" />
+			</xs:choice>
+			<xs:element name="WaitForResponse" type="xs:boolean" minOccurs="0"></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="MonitorCheckInResponseType">
+		<xs:sequence>
+			<xs:element name="CheckInNotification" type="tns:CheckInNotificationType" ></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="CancelCheckInRequestType">
+		<xs:sequence>
+			<xs:element name="MerchantInformation" type="base:MerchantInformationType" />
+			<xs:element name="Reason" type="tns:CancelCheckinReason" />
+			<xs:choice minOccurs="0">
+				<xs:element name="CustomerRelationUuid" type="base:UuidType" />
+				<xs:element name="PairingUuid" type="base:UuidType" />
+			</xs:choice>
+			<xs:element name="Coupons" type="tns:CouponListType" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="CancelCheckInResponseType">
+		<xs:sequence>
+			<xs:element name="Status" type="tns:OperationResultType" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="StartOrderRequestType">
+		<xs:sequence>
+			<xs:element name="MerchantInformation" type="base:MerchantInformationType" />
+			<xs:element name="Order" type="tns:OrderRequestType" />
+			<xs:element name="Coupons" type="tns:CouponListType" minOccurs="0" />
+			<xs:choice>
+				<xs:element name="OfflineAuthorization" type="base:Token3000Type" />
+				<xs:element name="CustomerRelationUuid" type="base:UuidType" />
+				<xs:element name="PairingUuid" type="base:UuidType" />
+				<xs:element name="UnidentifiedCustomer" type="xs:boolean" />
+				<xs:element name="UofMerchantAuthorization" type="tns:UofMerchantAuthorizationType" />
+			</xs:choice>
+			<xs:element name="QRCodeRendering" type="xs:boolean" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="StartOrderResponseType">
+		<xs:sequence>
+			<xs:element name="OrderUuid" type="base:UuidType" />
+			<xs:element name="OrderStatus" type="tns:OrderStatusType" />
+			<xs:element name="Token" type="base:NumericTokenType" minOccurs="0" />
+			<xs:element name="QRCode" type="base:DataUriScheme" minOccurs="0" />
+			<xs:element name="CustomerInformation" type="tns:CustomerInformationType" />
+			<xs:element name="PairingStatus" type="tns:PairingStatusType" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="MonitorOrderRequestType">
+		<xs:sequence>
+			<xs:element name="MerchantInformation" type="base:MerchantInformationType" />
+			<xs:choice>
+				<xs:element name="OrderUuid" type="base:UuidType" />
+				<xs:element name="MerchantTransactionReference" type="base:MerchantTransactionReferenceType" />
+			</xs:choice>
+			<xs:element name="WaitForResponse" type="xs:boolean" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="MonitorOrderResponseType">
+		<xs:sequence>
+			<xs:element name="MerchantInformation" type="base:MerchantInformationType" />
+			<xs:element name="Order" type="tns:OrderType" />
+			<xs:element name="PairingStatus" type="tns:PairingStatusType" />
+			<xs:element name="CustomerRelationUuid" type="base:UuidType" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+
+	 <xs:complexType name="ConfirmOrderRequestType">
+		<xs:sequence>
+			<xs:element name="MerchantInformation" type="base:MerchantInformationType" />
+			<xs:choice>
+				<xs:element name="OrderUuid" type="base:UuidType" />
+				<xs:element name="MerchantTransactionReference" type="base:MerchantTransactionReferenceType" />
+			</xs:choice>
+			<xs:element name="RequestedAmount" type="base:CurrencyAmountType" />
+			<xs:element name="SchemeFeeCategory" type="tns:FeeCategoryType" minOccurs="0"/>
+			<xs:element name="BilaCategory" type="tns:FeeCategoryType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:simpleType name="FeeCategoryType">
+		<xs:annotation>
+			<xs:documentation>
+				Base type: restriction of xs:string Pattern: [0-9A-Z]{1,50} defining a fee category.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[0-9A-Z]{1,50}" />
+		</xs:restriction>
+	</xs:simpleType>
+	
+
+	<xs:complexType name="ConfirmOrderResponseType">
+		<xs:sequence>
+			<xs:element name="MerchantInformation" type="base:MerchantInformationType" />
+			<xs:element name="Order" type="tns:OrderType" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="CancelOrderRequestType">
+		<xs:sequence>
+			<xs:element name="MerchantInformation" type="base:MerchantInformationType" />
+			<xs:choice>
+				<xs:element name="OrderUuid" type="base:UuidType" />
+				<xs:element name="MerchantTransactionReference" type="base:MerchantTransactionReferenceType" />
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="CancelOrderResponseType">
+		<xs:sequence>
+			<xs:element name="Order" type="tns:OrderType" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="FindOrderRequestType">
+		<xs:sequence>
+			<xs:choice>
+				<xs:element name="MerchantUuid" type="base:UuidType" />
+				<xs:element name="MerchantAliasId" type="base:Token50Type" />
+			</xs:choice>
+			<xs:element name="TerminalExternalId" type="base:Token50Type" minOccurs="0"/>
+			<xs:choice minOccurs="0">
+				<xs:group ref="tns:SearchByDate" />
+				<xs:group ref="tns:SearchByReference" />
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:group id="FindOrderByDate" name="SearchByDate">
+		<xs:sequence>
+			<xs:element name="SearchStartDate" type="xs:dateTime" />
+			<xs:element name="SearchEndDate" type="xs:dateTime" />
+		</xs:sequence>
+	</xs:group>
+
+	<xs:group id="FindOrderByReference" name="SearchByReference">
+		<xs:choice>
+			<xs:element name="OrderUuid" type="base:UuidType" />
+			<xs:element name="MerchantTransactionReference" type="base:MerchantTransactionReferenceType" />
+		</xs:choice>
+	</xs:group>
+
+	<xs:complexType name="FindOrderResponseType">
+		<xs:sequence>
+			<xs:element name="Order" type="tns:OrderType" minOccurs="0" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="EnrollCashRegisterRequestType">
+		<xs:sequence>
+			<xs:element name="MerchantInformation" type="base:MerchantInformationType" />
+			<xs:element name="TransactionType" type="base:TransactionTypeEnum" />
+			<xs:element name="FormerTerminalExternalId" type="base:Token50Type" minOccurs="0" />
+			<xs:element name="BeaconInventoryNumber" type="base:Token100Type" minOccurs="0" />
+			<xs:element name="BeaconDaemonVersion" type="base:Token50Type" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="EnrollCashRegisterResponseType">
+		<xs:sequence>
+			<xs:element name="BeaconSecurity" type="tns:BeaconSecurityType" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="CheckSystemStatusRequestType">
+		<xs:sequence>
+			<xs:element name="MerchantInformation" type="base:MerchantInformationType" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="CheckSystemStatusResponseType">
+		<xs:sequence>
+			<xs:element name="Status" type="tns:OperationResultType" />
+		</xs:sequence>
+	</xs:complexType>
+
+
+	<xs:complexType name="StartUofRegistrationRequestType">
+		<xs:sequence>
+			<xs:element name="MerchantInformation" type="base:MerchantInformationBaseType" />
+			<xs:element name="MerchantCredential" type="xs:base64Binary" />
+			<xs:element name="MerchantRegistrationReference" type="base:MerchantTransactionReferenceType" minOccurs="0" />
+			<xs:element name="RegistrationProcessTimeout" type="xs:duration" minOccurs="0" />
+			<xs:element name="AliasLifetime" type="xs:duration" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="StartUofRegistrationResponseType">
+		<xs:sequence>
+			<xs:element name="RegistrationUuid" type="base:UuidType" />
+			<xs:element name="RegistrationToken" type="base:TWINTTokenType" />
+			<xs:element name="RegistrationStatus" type="tns:RegistrationStatusType" />
+		</xs:sequence>
+	</xs:complexType>
+
+
+	<xs:complexType name="MonitorUofRegistrationRequestType">
+		<xs:sequence>
+			<xs:element name="MerchantInformation" type="base:MerchantInformationBaseType" />
+			<xs:choice>
+				<xs:element name="RegistrationUuid" type="base:UuidType" />
+				<xs:element name="MerchantRegistrationReference" type="base:MerchantTransactionReferenceType" />
+			</xs:choice>
+		</xs:sequence>
+		<xs:attribute name="waitForResponse" type="xs:boolean" use="optional" default="false" />
+	</xs:complexType>
+
+	<xs:complexType name="MonitorUofRegistrationResponseType">
+		<xs:sequence>
+			<xs:element name="Registration" type="tns:RegistrationType" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="ConfirmUofRegistrationRequestType">
+		<xs:sequence>
+			<xs:element name="MerchantInformation" type="base:MerchantInformationBaseType" />
+			<xs:choice>
+				<xs:element name="RegistrationUuid" type="base:UuidType" />
+				<xs:element name="MerchantRegistrationReference" type="base:MerchantTransactionReferenceType" />
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="ConfirmUofRegistrationResponseType">
+		<xs:sequence>
+			<xs:element name="RegistrationStatus" type="tns:RegistrationStatusType" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="CancelUofRegistrationRequestType">
+		<xs:sequence>
+			<xs:element name="MerchantInformation" type="base:MerchantInformationBaseType" />
+			<xs:choice>
+				<xs:element name="RegistrationUuid" type="base:UuidType" />
+				<xs:element name="MerchantRegistrationReference" type="base:MerchantTransactionReferenceType" />
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="CancelUofRegistrationResponseType">
+		<xs:sequence>
+			<xs:element name="RegistrationStatus" type="tns:RegistrationStatusType" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="DeregisterUofConnectionRequestType">
+		<xs:sequence>
+			<xs:element name="MerchantInformation" type="base:MerchantInformationBaseType" />
+			<xs:element name="UofCustomerRelationUuid" type="base:UuidType" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="DeregisterUofConnectionResponseType">
+		<xs:sequence>
+			<xs:element name="DeregistrationStatus" type="tns:RegistrationStatusType" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<!-- Common Types -->
+
+	<!-- Simple Types -->
+	<xs:simpleType name="OrderKindType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="PAYMENT_IMMEDIATE" />
+			<xs:enumeration value="PAYMENT_DEFERRED" />
+			<xs:enumeration value="PAYMENT_RECURRING" />
+			<xs:enumeration value="REVERSAL" />
+			<xs:enumeration value="CREDIT" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="PostingType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="GOODS" />
+			<xs:enumeration value="MONEY" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="PairingStatusType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="NO_PAIRING" />
+			<xs:enumeration value="PAIRING_IN_PROGRESS" />
+			<xs:enumeration value="PAIRING_ACTIVE" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="OperationResultType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="OK" />
+			<xs:enumeration value="ERROR" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="RejectionReasonType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="ALREADY_REDEEMED" />
+			<xs:enumeration value="ARTICLE_DELISTED" />
+			<xs:enumeration value="CAMPAIGN_EXPIRED" />
+			<xs:enumeration value="CAMPAIGN_CANCELED" />
+			<xs:enumeration value="OTHER" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="CancelCheckinReason">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="INVALID_PAIRING" />
+			<xs:enumeration value="OTHER_PAYMENT_METHOD" />
+			<xs:enumeration value="PAYMENT_ABORT" />
+			<xs:enumeration value="NO_PAYMENT_NEEDED" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="RequestCustomerAliasType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="NONE" />
+			<xs:enumeration value="LIST_COUPONS" />
+			<xs:enumeration value="RECURRING_PAYMENT" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="RegistrationStatusType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="PENDING" />
+			<xs:enumeration value="NEEDS_CONFIRMATION" />
+			<xs:enumeration value="SUCCESS" />
+			<xs:enumeration value="ERROR" />
+			<xs:enumeration value="CANCELED" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="OrderOperationType">
+		<xs:annotation>
+			<xs:documentation>
+				Enumeration based on xs:string, holding information about the actual Type of Order that should be processed by the Issuer
+				- WITHDRAW: Money should be transferred from the Issuer
+				- DEPOSIT: Money should be transferred to the Issuer
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="DEPOSIT" />
+			<xs:enumeration value="WITHDRAW" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<!-- Complex Types -->
+	<xs:complexType name="KeyValueType">
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute name="key" type="xs:token" use="required" />
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+
+	<xs:complexType name="CustomerInformationType">
+		<xs:sequence>
+			<xs:element name="Loyalty" type="tns:LoyaltyType" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="Coupon" type="tns:CouponType" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="CustomerRelationUuid" type="base:UuidType" minOccurs="0" />
+			<xs:element name="Addendum" type="tns:KeyValueType" minOccurs="0" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="LoyaltyType">
+		<xs:sequence>
+			<xs:element name="Program" type="base:Token50Type" />
+			<xs:element name="Reference" type="base:Token50Type" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="CouponListType">
+		<xs:sequence>
+			<xs:element name="ProcessedCoupon" type="tns:CouponType" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="RejectedCoupon" type="tns:RejectedCouponType" minOccurs="0" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="CouponType">
+		<xs:sequence>
+			<xs:element name="CouponId" type="base:Token100Type" />
+			<xs:element name="CouponValue" type="base:CurrencyAmountType" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="RejectedCouponType">
+		<xs:sequence>
+			<xs:element name="CouponId" type="base:Token100Type" />
+			<xs:element name="RejectionReason" type="tns:CouponRejectionReason" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="CouponRejectionReason">
+		<xs:sequence>
+			<xs:element name="RejectionReason" type="tns:RejectionReasonType" />
+			<xs:element name="Details" type="xs:string" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="CheckInNotificationType">
+		<xs:sequence>
+			<xs:element name="MerchantInformation" type="base:MerchantInformationType" />
+			<xs:element name="CustomerInformation" type="tns:CustomerInformationType" minOccurs="0" />
+			<xs:element name="PairingUuid" type="base:UuidType" minOccurs="0" />
+			<xs:element name="PairingStatus" type="tns:PairingStatusType" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="OrderStatusType">
+		<xs:sequence>
+			<xs:element name="Status" type="tns:CodeValueType" />
+			<xs:element name="Reason" type="tns:CodeValueType" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="CodeValueType">
+		<xs:simpleContent>
+			<xs:extension base="xs:token">
+				<xs:attribute name="code" type="xs:int" use="required" />
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+
+	<xs:complexType name="OrderRequestType">
+		<xs:sequence>
+			<xs:element name="PostingType" type="tns:PostingType" />
+			<xs:element name="RequestedAmount" type="base:CurrencyAmountType" />
+			<xs:element name="MerchantTransactionReference" type="base:MerchantTransactionReferenceType" />
+			<xs:element name="CustomerBenefit" type="base:CurrencyAmountType" minOccurs="0" />
+			<xs:element name="EReceiptUrl" type="base:Token250Type" minOccurs="0" />
+			<xs:element name="Link" type="tns:OrderLinkType" minOccurs="0" />
+		</xs:sequence>
+		<xs:attribute name="type" type="tns:OrderKindType" use="required" />
+		<xs:attribute name="confirmationNeeded" type="xs:boolean" default="false" />
+	</xs:complexType>
+
+	<xs:complexType name="OrderType">
+		<xs:complexContent>
+			<xs:extension base="tns:OrderRequestType">
+				<xs:sequence>
+					<xs:element name="Uuid" type="base:UuidType" />
+					<xs:element name="Status" type="tns:OrderStatusType" />
+					<xs:element name="CreationTimestamp" type="xs:dateTime" />
+					<xs:element name="IssuerMemberId" type="base:MemberIdType" minOccurs="0" />
+					<xs:element name="ClearingPeriod" type="base:ClearingPeriodType" minOccurs="0" />
+					<xs:element name="AuthorizedAmount" type="base:CurrencyAmountType" minOccurs="0" />
+					<xs:element name="Fee" type="base:CurrencyAmountType" minOccurs="0" />
+					<xs:element name="ProcessingTimestamp" type="xs:dateTime" minOccurs="0" />
+					<xs:element name="PaymentAmount" type="tns:PaymentAmountType" maxOccurs="unbounded" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="PaymentAmountType">
+		<xs:sequence>
+			<xs:element name="PaymentMethod" type="tns:PaymentMethodTypeEnum" />
+			<xs:element name="Amount" type="base:CurrencyAmountType" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:simpleType name="PaymentMethodTypeEnum">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="CREDIT" />
+			<xs:enumeration value="DEBIT" />
+			<xs:enumeration value="" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="OrderLinkType">
+		<xs:choice>
+			<xs:element name="MerchantTransactionReference" type="base:MerchantTransactionReferenceType" />
+			<xs:element name="OrderUuid" type="base:UuidType" />
+		</xs:choice>
+	</xs:complexType>
+
+	<xs:complexType name="BeaconSecurityType">
+		<xs:sequence>
+			<xs:element name="BeaconUuid" type="base:UuidType" />
+			<xs:element name="MajorId" type="xs:int" />
+			<xs:element name="MinorId" type="xs:int" />
+			<xs:element name="BeaconInitString" type="xs:string" />
+			<xs:element name="BeaconSecret" type="xs:string" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="GetCertificateValidityRequestType">
+		<xs:choice>
+			<xs:element name="MerchantUuid" type="base:UuidType" />
+			<xs:element name="MerchantAliasId" type="base:Token50Type" />
+		</xs:choice>
+	</xs:complexType>
+
+	<xs:complexType name="GetCertificateValidityResponseType">
+		<xs:sequence>
+			<xs:element name="CertificateExpiryDate" type="xs:date" />
+			<xs:element name="RenewalAllowed" type="xs:boolean" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="RenewCertificateRequestType">
+		<xs:sequence>
+			<xs:choice>
+				<xs:element name="MerchantUuid" type="base:UuidType" />
+				<xs:element name="MerchantAliasId" type="base:Token50Type" />
+			</xs:choice>
+			<xs:element name="CertificatePassword" type="xs:base64Binary" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="RenewCertificateResponseType">
+		<xs:sequence>
+			<xs:element name="MerchantCertificate" type="xs:base64Binary" />
+			<xs:element name="ExpirationDate" type="xs:dateTime" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="UofMerchantAuthorizationType">
+		<xs:sequence>
+			<xs:element name="AuthorizationTimestamp" type="xs:string" />
+			<xs:element name="RequestSignature" type="xs:base64Binary" />
+			<xs:element name="MerchantCertificate" type="xs:base64Binary" />
+			<xs:element name="OrderUuid" type="base:UuidType" />
+			<xs:element name="Operation" type="tns:OrderOperationType" />
+			<xs:element name="UofCustomerRelationUuid" type="base:UuidType" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="RegistrationType">
+		<xs:sequence>
+			<xs:element name="RegistrationStatus" type="tns:RegistrationStatusType" />
+			<xs:element name="UofCustomerRelationUuid" type="base:UuidType" minOccurs="0" />
+			<xs:element name="ConfirmedMerchantCredential" type="xs:base64Binary" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+
+</xs:schema>
